@@ -2,6 +2,12 @@ body {
     font-family: Arial, sans-serif;
     text-align: center;
     margin: 20px;
+    background-color: rgb(79, 81, 74);
+
+    
+}
+a {
+    color: blue; /* Change to any color */
 }
 
 input {
@@ -14,4 +20,20 @@ input {
 button {
     padding: 10px 20px;
     cursor: pointer;
+}
+ .first {
+  width:300px;
+  height: 350px;
+  background-color: rgb(191, 215, 223);
+  text-align: center;
+  border: 3px solid rgb(63, 52, 52);
+  margin-left: 500px;
+  margin-top: 75px;
+  box-shadow: 10px 10px 10px rgba(02 2, 2, 0.5);
+  border: radius 10px;
+  border-color: rgb(103, 94, 94);
+}
+.forgot {
+  margin-top:2px;
+  margin-bottom: 2px;
 }

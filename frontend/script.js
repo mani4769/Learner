@@ -18,13 +18,31 @@ document.getElementById("loginForm").addEventListener("submit", async (event) =>
     event.preventDefault();
     const email = document.getElementById("loginEmail").value;
     const password = document.getElementById("loginPassword").value;
+    try {
+        const response = await fetch("http://localhost:5000/auth/login", { // Make sure this URL is correct
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ email, password })
+        });
 
-    const response = await fetch("http://localhost:5000/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-    });
+        const data = await response.json(); // Read JSON response
 
-    const result = await response.text();
-    alert(result);
+        if (data.success) {
+            message.style.color = "green";
+            message.textContent = "Login Successful! Redirecting...";
+            setTimeout(() => {
+                window.location.href = "home.html";
+            }, 2000);
+        } else {
+            message.style.color = "red";
+            message.textContent = data.message;
+        }
+    } catch (error) {
+        message.style.color = "red";
+        message.textContent = "Error connecting to server!";
+        console.error("Fetch error:", error);
+    }
+
 });

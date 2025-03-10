@@ -29,11 +29,13 @@ router.post("/login", async (req, res) => {
         if (!user) return res.status(400).send("User not found");
 
         const isMatch = await bcrypt.compare(password, user.password);
+        
         if (!isMatch) return res.status(400).send("Invalid credentials");
 
-        res.send("Login successful");
+
+        res.status(201).send("Login successful");
     } catch (error) {
-        res.status(500).send("Error logging in");
+        res.status(500).send("Error logging in");     
     }
 });
 
