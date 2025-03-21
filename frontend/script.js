@@ -1,75 +1,122 @@
-// Signup Form Submission
-document.getElementById("signupForm").addEventListener("submit", async (event) => {
-    event.preventDefault();
-    const name = document.getElementById("signupName").value;
-    const email = document.getElementById("signupEmail").value;
-    const password = document.getElementById("signupPassword").value;
-
-    const response = await fetch("http://localhost:5000/auth/signup", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, password }),
+document.addEventListener('DOMContentLoaded', () => {
+    // Add active class to current page in navigation
+    const currentPage = window.location.pathname;
+    const navLinks = document.querySelectorAll('.nav-links a');
+    
+    navLinks.forEach(link => {
+        if (link.getAttribute('href') === currentPage) {
+            link.classList.add('active');
+        }
     });
 
-    const result = await response.json();
-    alert(result.message);
-
-    if (result.success) {
-        window.location.href = "index.html"; // Redirect to login page
+    // Handle logout
+    const logoutBtn = document.querySelector('a[href="index.html"]');
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', (e) => {
+            if (!confirm('Are you sure you want to logout?')) {
+                e.preventDefault();
+            }
+        });
     }
 });
+// Signup Form Submission
+const signupForm = document.getElementById("signupForm");
+if (signupForm) {
+    signupForm.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        const name = document.getElementById("signupName").value;
+        const email = document.getElementById("signupEmail").value;
+        const password = document.getElementById("signupPassword").value;
+
+        try {
+            const response = await fetch("http://localhost:5000/auth/signup", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ name, email, password }),
+            });
+
+            const result = await response.json();
+            alert(result.message);
+
+            if (result.success) {
+                window.location.href = "index.html"; // Redirect to login page
+            }
+        } catch (error) {
+            console.error("Signup error:", error);
+            alert("Failed to signup. Please try again.");
+        }
+    });
+}
 
 // Login Form Submission
-document.getElementById("loginform").addEventListener("submit", async (event) => {
-    event.preventDefault();
-    const email = document.getElementById("loginEmail").value;
-    const password = document.getElementById("loginPassword").value;
+const loginForm = document.getElementById("loginform");
+if (loginForm) {
+    loginForm.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        const email = document.getElementById("loginEmail").value;
+        const password = document.getElementById("loginPassword").value;
 
-    const response = await fetch("http://localhost:5000/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
+        try {
+            const response = await fetch("http://localhost:5000/auth/login", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email, password }),
+            });
+
+            const data = await response.json();
+            alert(data.message);
+
+            if (data.success) {
+                window.location.href = "home.html"; // Redirect to home page
+            }
+        } catch (error) {
+            console.error("Login error:", error);
+            alert("Failed to login. Please try again.");
+        }
     });
+}
+// ...existing code...
 
-    const data = await response.json();
-    alert(data.message);
+// Forgot Password Form Handler
+const forgotPasswordForm = document.getElementById("forgotpassword");
+if (forgotPasswordForm) {
+    forgotPasswordForm.addEventListener("submit", async (event) => {
+        event.preventDefault();
 
-    if (data.success) {
-        window.location.href = "home.html"; // Redirect to home page
-    }
-});
+        try {
+            const email = document.getElementById("forgotEmail").value;
+            const newPassword = document.getElementById("newPassword").value;
+            const confirmPassword = document.getElementById("confirmPassword").value;
 
-// Forgot Password Form Submission
-document.getElementById("forgotpassword").addEventListener("submit", async (event) => {
-    event.preventDefault();
-    const email = document.getElementById("forgotEmail").value;
+            if (newPassword !== confirmPassword) {
+                alert("Passwords do not match!");
+                return;
+            }
 
-    const response = await fetch("http://localhost:5000/auth/forgot-password", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
+            const response = await fetch("http://localhost:5000/auth/reset-password", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    email,
+                    newPassword
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error("Failed to reset password");
+            }
+
+            const data = await response.json();
+            alert(data.message);
+
+            if (data.success) {
+                window.location.href = "index.html";
+            }
+        } catch (error) {
+            console.error("Reset password error:", error);
+            alert("Failed to reset password. Please try again.");
+        }
     });
-
-    const data = await response.json();
-    alert(data.message);
-});
-
-// Reset Password Form Submission
-document.getElementById("resetPasswordForm").addEventListener("submit", async (event) => {
-    event.preventDefault();
-    const token = document.getElementById("resetToken").value;
-    const newPassword = document.getElementById("newPassword").value;
-
-    const response = await fetch("http://localhost:5000/auth/reset-password", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ token, newPassword }),
-    });
-
-    const data = await response.json();
-    alert(data.message);
-
-    if (data.success) {
-        window.location.href = "index.html"; // Redirect to login page
-    }
-});
+}

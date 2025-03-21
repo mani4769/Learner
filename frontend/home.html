@@ -1,12 +1,79 @@
+frontend\home.html
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-
+    <title>Coding Platform - Home</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="home.css">
 </head>
 <body>
-    <h1>welcome to home page</h1>
+    <nav class="navbar">
+        <div class="logo">
+            <i class="fas fa-code"></i>
+            <span>CodeLearner</span>
+        </div>
+        <ul class="nav-links">
+            <li class="dropdown">
+                <a href="#" class="active"><i class="fas fa-home"></i> Home</a>
+            </li>
+            <li class="dropdown">
+                <a href="#"><i class="fas fa-book"></i> Tutorials <i class="fas fa-chevron-down"></i></a>
+                <ul class="dropdown-content">
+                    <li><a href="#">Python</a></li>
+                    <li><a href="#">JavaScript</a></li>
+                    <li><a href="#">Java</a></li>
+                    <li><a href="#">C++</a></li>
+                </ul>
+            </li>
+            <li class="dropdown">
+                <a href="#"><i class="fas fa-question-circle"></i> Help <i class="fas fa-chevron-down"></i></a>
+                <ul class="dropdown-content">
+                    <li><a href="#">Documentation</a></li>
+                    <li><a href="#">FAQs</a></li>
+                    <li><a href="#">Support</a></li>
+                </ul>
+            </li>
+            <li class="dropdown">
+                <a href="#"><i class="fas fa-envelope"></i> Contact</a>
+            </li>
+            <li class="dropdown profile-dropdown">
+                <a href="#"><i class="fas fa-user-circle"></i> Profile <i class="fas fa-chevron-down"></i></a>
+                <ul class="dropdown-content">
+                    <li><a href="#"><i class="fas fa-cog"></i> Settings</a></li>
+                    <li><a href="#"><i class="fas fa-code"></i> My Projects</a></li>
+                    <li><a href="index.html"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                </ul>
+            </li>
+        </ul>
+    </nav>
+
+    <main class="content">
+        <section class="hero">
+            <h1>Welcome to CodeLearner</h1>
+            <p>Your journey to becoming a programming expert starts here</p>
+        </section>
+
+        <section class="features">
+            <div class="feature-card">
+                <i class="fas fa-laptop-code"></i>
+                <h3>Learn to Code</h3>
+                <p>Interactive tutorials and hands-on projects</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-users"></i>
+                <h3>Community</h3>
+                <p>Connect with fellow developers</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-certificate"></i>
+                <h3>Get Certified</h3>
+                <p>Earn certificates as you progress</p>
+            </div>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
 </body>
 </html>

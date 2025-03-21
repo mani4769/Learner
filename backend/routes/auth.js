@@ -6,12 +6,13 @@ const User = require("../models/User");
 const router = express.Router();
 
 // Signup Route
+// Signup Route
 router.post("/signup", async (req, res) => {
     const { name, email, password } = req.body;
     try {
         const userExists = await User.findOne({ email });
         if (userExists) {
-            return res.status(400).json({ success: false, message: "User already exists" });
+            return res.status(400).json({ success: false, message: "User already exists" }); // Ensure JSON response
         }
 
         const hashedPassword = await bcrypt.hash(password, 10);
@@ -65,25 +66,33 @@ router.post("/forgot-password", async (req, res) => {
         res.status(500).json({ success: false, message: "Error generating reset token" });
     }
 });
-
 // Reset Password Route
 router.post("/reset-password", async (req, res) => {
-    const { token, newPassword } = req.body;
+    const { email, newPassword } = req.body;
     try {
-        const user = await User.findOne({ resetToken: token, resetTokenExpire: { $gt: Date.now() } });
-        if (!user) return res.status(400).json({ success: false, message: "Invalid or expired token" });
+        const user = await User.findOne({ email });
+        if (!user) {
+            return res.status(400).json({ 
+                success: false, 
+                message: "User not found" 
+            });
+        }
 
         // Hash the new password
-        user.password = await bcrypt.hash(newPassword, 10);
-        user.resetToken = undefined;
-        user.resetTokenExpire = undefined;
-        await user.save();
+        const hashedPassword = await bcrypt.hash(newPassword, 10);
+        user.password = hashedPassword;
 
-        res.status(200).json({ success: true, message: "Password reset successful" });
+        await user.save();
+        return res.status(200).json({ 
+            success: true, 
+            message: "Password updated successfully" 
+        });
     } catch (error) {
         console.error("Reset password error:", error);
-        res.status(500).json({ success: false, message: "Error resetting password" });
+        return res.status(500).json({ 
+            success: false, 
+            message: "Error updating password" 
+        });
     }
 });
-
 module.exports = router;
